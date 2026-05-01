@@ -1793,48 +1793,42 @@ function loadPromptModeDropdowns() {
     promptTone.innerHTML = healthcareTone.innerHTML;
   }
 
-  // 2. Populate Prompt Mode RAG collections as checkboxes (fallback to multi-select if still a <select>)
-  const healthcareRAG = document.getElementById("rag-file-select");
+  // 2. Populate Prompt Mode RAG collections as checkboxes — fetch directly from API
   const promptCollections = document.getElementById("prompt-mode-collections");
-  if (healthcareRAG && promptCollections) {
-    const isSelect = (promptCollections.tagName || "").toLowerCase() === "select";
-    // Determine if we need to populate (empty or only placeholder)
-    const needsPopulate = isSelect
-      ? (promptCollections.options && promptCollections.options.length <= 1)
-      : (promptCollections.children.length === 0 || /Loading RAG Collections/i.test(promptCollections.textContent || ""));
-
-    if (needsPopulate) {
-      // Clear existing
-      promptCollections.innerHTML = "";
-      Array.from(healthcareRAG.options).forEach((opt) => {
-        if (!opt.value) return; // skip placeholders
-        if (isSelect) {
-          const newOpt = document.createElement("option");
-          newOpt.value = opt.value;
-          newOpt.textContent = opt.textContent;
-          promptCollections.appendChild(newOpt);
-        } else {
+  if (promptCollections) {
+    promptCollections.innerHTML = '<div class="field-hint">Loading collections...</div>';
+    const RAG_META_BASE = window.RAG_META_BASE || (window.env && window.env.RAG_META_BASE);
+    const user = (() => { try { return JSON.parse(localStorage.getItem("user") || "null"); } catch (e) { return null; } })();
+    fetch(`${RAG_META_BASE}/rag-documents`, {
+      headers: user && user.id ? { Authorization: `Bearer ${user.id}` } : {},
+    })
+      .then((res) => { if (!res.ok) throw new Error(`Status ${res.status}`); return res.json(); })
+      .then((data) => {
+        const collections = Array.isArray(data) ? data.map((g) => g.collection_name).filter(Boolean) : [];
+        if (!collections.length) {
+          promptCollections.innerHTML = '<div class="field-hint">No RAG collections found.</div>';
+          return;
+        }
+        promptCollections.innerHTML = "";
+        collections.forEach((name) => {
           const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.alignItems = "center";
-          row.style.gap = "8px";
-          row.style.marginBottom = "6px";
-
+          row.style.cssText = "display:flex;align-items:center;gap:8px;margin-bottom:6px;";
           const cb = document.createElement("input");
           cb.type = "checkbox";
-          cb.value = opt.value;
-          cb.id = `pmc-${opt.value}`;
-
+          cb.value = name;
+          cb.id = `pmc-${name}`;
           const label = document.createElement("label");
           label.setAttribute("for", cb.id);
-          label.textContent = opt.textContent;
-
+          label.textContent = name;
           row.appendChild(cb);
           row.appendChild(label);
           promptCollections.appendChild(row);
-        }
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to load prompt mode RAG collections:", err);
+        promptCollections.innerHTML = '<div class="field-hint" style="color:red;">Failed to load collections.</div>';
       });
-    }
   }
 
   // 3. Clone Templates
