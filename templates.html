@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Templates — Samodrei Email Templates</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="env.js"></script>
+    <link rel="stylesheet" href="samodrei_design.css" />
+    <style>
+      :root {
+        /* Remap green → indigo */
+        --primary-green:      #6366F1;
+        --primary-green-dark: #4F46E5;
+        --muted:      #64748B;
+        --card-bg:    #FFFFFF;
+        --border:     #E2E8F0;
+        --danger:     #EF4444;
+        --accent-blue:#3B82F6;
+        --glass:      #FFFFFF;
+        /* New tokens */
+        --primary:        #6366F1;
+        --primary-dark:   #4F46E5;
+        --primary-darker: #4338CA;
+        --primary-light:  #EEF2FF;
+        --surface-2:      #F1F5F9;
+        --text:           #0F172A;
+        --text-2:         #475569;
+        --text-3:         #94A3B8;
+        --shadow-sm:      0 1px 3px rgba(15,23,42,0.05);
+        --r:    8px;
+        --r-lg: 12px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial;
+        background: #f8fafc;
+        color: #153243;
+        -webkit-font-smoothing: antialiased;
+      }
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .brand h1 {
+        font-size: 16px;
+        margin: 0;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: inherit;
+        font-size: 13.5px;
+        box-shadow: none;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+      }
+      .btn:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1.5px solid var(--primary);
+        color: var(--primary-dark);
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: inherit;
+        font-size: 13.5px;
+        transition: background 0.15s;
+      }
+      .btn-outline:hover {
+        background: var(--primary-light);
+        color: var(--primary-darker);
+      }
+      .btn-danger {
+        background: var(--danger);
+        color: #fff;
+        border: none;
+      }
+      .btn-danger:hover {
+        background: #DC2626;
+        box-shadow: 0 4px 14px rgba(239,68,68,0.3);
+      }
+      .container {
+        max-width: 1280px;
+        margin: 20px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: minmax(0, 32%) minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+      }
+      .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+        transition: box-shadow 0.2s ease;
+      }
+      .sidebar {
+        position: sticky;
+        top: 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        max-height: calc(100vh - 88px);
+        overflow-y: auto;
+      }
+      .sidebar .card {
+        position: static; /* sidebar itself is sticky now */
+      }
+      h2 {
+        margin: 0 0 8px 0;
+        font-size: 18px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .list {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-height: 340px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 4px;
+      }
+      .tpl-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fff;
+        border: 1px solid #f1f5f9;
+      }
+      .tpl-item .meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .tpl-item .meta .name {
+        font-weight: 600;
+      }
+      .tpl-item .meta .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .tpl-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      input[type="text"]:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+      }
+      textarea {
+        min-height: 340px;
+        font-family: monospace;
+        font-size: 13px;
+        resize: vertical;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .spaced {
+        margin-top: 12px;
+      }
+      .editor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .preview-wrap {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+        min-height: 420px;
+      }
+      .preview-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        background: #fafafa;
+      }
+      iframe.preview {
+        border: 0;
+        width: 100%;
+        height: calc(100vh - 320px);
+        min-height: 400px;
+      }
+      .small-note {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .inline-controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .ghost {
+        background: transparent;
+        border: 1px dashed var(--border);
+        padding: 10px;
+        border-radius: 8px;
+        color: var(--muted);
+      }
+      .img-list {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .img-thumb {
+        width: 72px;
+        height: 48px;
+        border-radius: 6px;
+        background: #f3f4f6;
+        border: 1px solid #e6eef0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+      .img-thumb img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+      }
+      .img-thumb .img-delete {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .footer-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 12px;
+      }
+      .notice {
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #EEF2FF;
+        color: var(--primary-darker);
+        border: 1px solid rgba(99,102,241,0.15);
+        font-weight: 600;
+      }
+      .danger {
+        background: #fff1f2;
+        color: #7f1d1d;
+        border: 1px solid rgba(239, 68, 68, 0.08);
+      }
+      .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      @media (max-width: 860px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: static;
+          max-height: none;
+        }
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+        .preview-toolbar {
+          flex-wrap: wrap;
+        }
+        .preview-wrap iframe {
+          height: 320px;
+        }
+      }
+
+      /* ---------- Toasts ---------- */
+      #toast-container {
+        position: fixed;
+        right: 18px;
+        top: 18px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+      }
+      .toast {
+        min-width: 220px;
+        max-width: 360px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
+        color: #fff;
+        font-weight: 600;
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .toast.info {
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+      }
+      .toast.success {
+        background: linear-gradient(90deg, #818CF8, #6366F1);
+      }
+      .toast.error {
+        background: linear-gradient(90deg, #f87171, #ef4444);
+      }
+
+      /* ---------- Confirm modal ---------- */
+      #confirm-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        background: rgba(2, 6, 23, 0.45);
+      }
+      #confirm-modal .card {
+        width: 420px;
+        max-width: calc(100% - 40px);
+      }
+      #confirm-modal .confirm-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 12px;
+      }
+      #confirm-modal .confirm-message {
+        color: var(--muted);
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo-icon">S</div>
+        <div>
+          <h1>Samodrei · Templates</h1>
+          <div class="muted">Manage HTML email templates & images</div>
+        </div>
+        </div>
+
+        <!-- AI Generator modal -->
+        <div id="ai-modal" role="dialog" aria-modal="true" style="display:none; position:fixed; inset:0; z-index:11000; align-items:center; justify-content:center; background:rgba(2,6,23,0.45);">
+          <div class="card" style="width:720px; max-width:calc(100% - 32px);">
+            <h3>Make Template with AI</h3>
+            <div class="small-note">First upload any images you want to use (Images → Upload). Then choose one or paste image URLs below. Provide instructions describing layout/colors/content.</div>
+            <div style="margin-top:10px">
+              <label>Image URL (optional)</label>
+              <select id="ai-images-select" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;">
+                <option value="">-- choose an uploaded image URL (or paste one below) --</option>
+              </select>
+              <input type="text" id="ai-image-custom" placeholder="Or paste an image URL here" style="width:100%; margin-top:8px; padding:8px; border:1px solid var(--border); border-radius:6px;" />
+            </div>
+            <div style="margin-top:10px">
+              <label>Instructions for AI</label>
+              <textarea id="ai-instructions" placeholder="E.g., Create a two-column layout, left column image, right column headline, 2 bullet benefits, CTA button. Use the uploaded image. Keep it professional." style="width:100%; min-height:120px; padding:8px; border:1px solid var(--border); border-radius:6px;"></textarea>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+              <button class="btn-outline" id="ai-cancel-btn">Cancel</button>
+              <button class="btn" id="ai-generate-run">Generate Template</button>
+            </div>
+            <div id="ai-modal-msg" style="margin-top:8px; display:none"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+        <button class="btn-outline" id="back-to-campaign">
+          ← Back to Campaign
+        </button>
+        <button class="btn" id="create-new-btn">+ New Template</button>
+        
+        <button class="btn-outline" id="ai-generate-btn" title="Make template with AI">Make template with AI</button>
+      </div>
+    </div>
+
+    <main class="container">
+      <!-- Left: Template list & image uploads -->
+      <aside class="sidebar">
+        <div class="card">
+          <div class="flex-between">
+            <div>
+              <h2>Your Templates</h2>
+              <div class="small-note">
+                Templates belong to the logged-in user
+              </div>
+            </div>
+            <div class="small-note" id="tpl-count">—</div>
+          </div>
+
+          <div class="list" id="templates-list" aria-live="polite">
+            <!-- items inserted by JS -->
+          </div>
+
+          <div class="spaced">
+            <label>Search Templates</label>
+            <input
+              type="text"
+              id="tpl-search"
+              placeholder="Search by name..."
+            />
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 12px">
+          <h2>Images</h2>
+          <div class="muted">
+            Upload images to store in SQL (BLOB) and reuse via URL
+          </div>
+          <div style="margin-top: 10px">
+            <input type="file" id="image-file-input" accept="image/*" />
+            <div class="small-note" style="margin-top: 8px">
+              Uploaded images will return a URL from the backend. You can insert
+              that URL into your templates or pick from the list below.
+            </div>
+            <div style="margin-top: 8px">
+              <button class="btn btn-outline" id="upload-image-btn">
+                Upload Image
+              </button>
+            </div>
+
+            <div
+              class="img-list"
+              id="images-list"
+              aria-live="polite"
+              style="margin-top: 12px"
+            ></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: Editor & Preview -->
+      <section>
+        <div class="card">
+          <div class="flex-between">
+            <div>
+              <h2 id="editor-title">Edit Template</h2>
+              <div class="muted" id="editor-sub">
+                Use <code>{{content}}</code> where AI content should be injected. Select this template in Campaign Builder to apply it.
+              </div>
+            </div>
+            <div>
+              <div class="small-note" id="last-saved">Not saved yet</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px" id="editor-area">
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                margin-bottom: 10px;
+              "
+            >
+              <div style="flex: 1">
+                <label for="template-name"
+                  >Template Name
+                  <span style="color: var(--danger)">*</span></label
+                >
+                <input
+                  type="text"
+                  id="template-name"
+                  placeholder="e.g., Cardio - Clinical Summary"
+                />
+                <div class="small-note" style="margin-top: 6px">
+                  Name must be unique for your account.
+                </div>
+              </div>
+
+              <div style="width: 260px">
+                <label for="template-visibility">Preview Mode</label>
+                <select id="template-visibility">
+                  <option value="live">Live (render)</option>
+                  <option value="raw">Raw HTML</option>
+                </select>
+                <div class="small-note" style="margin-top: 6px">
+                  Choose how preview renders content.
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px" class="inline-controls">
+              <button class="btn-outline" id="insert-content-placeholder">
+                Insert <code>{{content}}</code>
+              </button>
+              <button class="btn-outline" id="insert-subject-placeholder">
+                Insert <code>{{subject}}</code>
+              </button>
+              <button class="btn-outline" id="insert-image-placeholder">
+                Insert Image URL
+              </button>
+
+              <div style="margin-left: auto; display: flex; gap: 8px">
+                <button class="btn-outline" id="save-as-new">
+                  Save as New
+                </button>
+                <button class="btn" id="save-template">Save</button>
+                <button class="btn btn-danger" id="delete-template">
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px" class="editor-grid">
+              <div>
+                <label for="template-html">Template HTML</label>
+                <textarea
+                  id="template-html"
+                  placeholder="Paste or edit HTML here..."
+                ></textarea>
+                <div class="small-note spaced">
+                  Tip: include
+                  <code>&lt;img src=&quot;IMAGE_URL&quot;&gt;</code> for inline
+                  images. Use the images list to upload and copy URLs.
+                </div>
+
+                <div
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                  "
+                >
+                  <div style="flex: 1">
+                    <label>Available images</label>
+                    <select id="images-select" class="ghost">
+                      <option value="">-- pick image URL --</option>
+                    </select>
+                  </div>
+                  <button class="btn-outline" id="copy-image-url">
+                    Copy URL
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label>Live Preview</label>
+                <div class="preview-wrap" id="preview-wrap">
+                  <div class="preview-toolbar">
+                    <div class="muted" id="preview-mode-label">
+                      Previewing rendered HTML
+                    </div>
+                    <div
+                      style="
+                        margin-left: auto;
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                      "
+                    >
+                      <button class="btn-outline" id="refresh-preview">
+                        Refresh
+                      </button>
+                      <button class="btn-outline" id="open-preview-new">
+                        Open in new tab
+                      </button>
+                    </div>
+                  </div>
+                  <iframe
+                    class="preview"
+                    id="preview-iframe"
+                    sandbox="allow-same-origin allow-scripts"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px">
+              <div id="message-area" style="display: none"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Toast container -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Confirm modal (custom) -->
+    <div
+      id="confirm-modal"
+      role="dialog"
+      aria-modal="true"
+      style="display: none"
+    >
+      <div class="card">
+        <h3 id="confirm-title">Please confirm</h3>
+        <div class="confirm-message" id="confirm-message">Are you sure?</div>
+        <div class="confirm-actions" style="margin-top: 14px">
+          <button class="btn-outline" id="confirm-cancel">Cancel</button>
+          <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const API =
+          window.API_BASE_URL ||
+          (window.env && window.env.API_BASE_URL) ||
+          window.API_BASE;
+        const user = (() => {
+          try {
+            return JSON.parse(localStorage.getItem("user") || "null");
+          } catch {
+            return null;
+          }
+        })();
+
+        function authHeaders(extra = {}) {
+          const h = { Accept: "application/json", ...extra };
+          if (user && user.id) h["Authorization"] = `Bearer ${user.id}`;
+          return h;
+        }
+
+        // DOM refs
+        const templatesList = document.getElementById("templates-list");
+        const tplCount = document.getElementById("tpl-count");
+        const tplSearch = document.getElementById("tpl-search");
+        const createNewBtn = document.getElementById("create-new-btn");
+        const backBtn = document.getElementById("back-to-campaign");
+        const openTemplateAiBtn = document.getElementById("open-template-ai");
+
+        const nameInput = document.getElementById("template-name");
+        const htmlInput = document.getElementById("template-html");
+        const saveBtn = document.getElementById("save-template");
+        const saveAsNewBtn = document.getElementById("save-as-new");
+        const deleteBtn = document.getElementById("delete-template");
+        const previewIframe = document.getElementById("preview-iframe");
+        const refreshPreview = document.getElementById("refresh-preview");
+        const openPreviewNew = document.getElementById("open-preview-new");
+        const previewModeSelect = document.getElementById(
+          "template-visibility"
+        );
+        const previewModeLabel = document.getElementById("preview-mode-label");
+        const insertContentBtn = document.getElementById(
+          "insert-content-placeholder"
+        );
+        const insertSubjectBtn = document.getElementById(
+          "insert-subject-placeholder"
+        );
+        const insertImageBtn = document.getElementById(
+          "insert-image-placeholder"
+        );
+        const imagesInput = document.getElementById("image-file-input");
+        const uploadImageBtn = document.getElementById("upload-image-btn");
+        const imagesList = document.getElementById("images-list");
+        const imagesSelect = document.getElementById("images-select");
+        const copyImageUrlBtn = document.getElementById("copy-image-url");
+        const messageArea = document.getElementById("message-area");
+        const tplTitle = document.getElementById("editor-title");
+        const lastSavedEl = document.getElementById("last-saved");
+        const tplSearchInput = document.getElementById("tpl-search");
+        const toastContainer = document.getElementById("toast-container");
+        const confirmModal = document.getElementById("confirm-modal");
+        const confirmMessageEl = document.getElementById("confirm-message");
+        const confirmOkBtn = document.getElementById("confirm-ok");
+        const confirmCancelBtn = document.getElementById("confirm-cancel");
+
+        // state
+        let templates = [];
+        let images = [];
+        let current = null;
+        let dirty = false;
+
+        // ---------- Toast helper ----------
+        function showToast(msg, type = "info", timeout = 3000) {
+          const el = document.createElement("div");
+          el.className = `toast ${
+            type === "error" ? "error" : type === "success" ? "success" : "info"
+          }`;
+          el.innerHTML = `<div style="flex:1">${msg}</div><div style="opacity:0.9;font-weight:700">${
+            type === "success" ? "✓" : type === "error" ? "✕" : "ℹ"
+          }</div>`;
+          toastContainer.appendChild(el);
+          setTimeout(() => {
+            el.style.transition = "transform .22s, opacity .22s";
+            el.style.opacity = "0";
+            el.style.transform = "translateX(20px)";
+          }, Math.max(1200, timeout - 220));
+          setTimeout(() => {
+            try {
+              el.remove();
+            } catch (e) {}
+          }, timeout + 200);
+          return el;
+        }
+
+        // ---------- Confirm modal helper ----------
+        function modalConfirm(message = "Are you sure?") {
+          return new Promise((resolve) => {
+            confirmMessageEl.textContent = message;
+            confirmModal.style.display = "flex";
+            confirmOkBtn.focus();
+
+            function cleanup(val) {
+              confirmModal.style.display = "none";
+              confirmOkBtn.removeEventListener("click", okHandler);
+              confirmCancelBtn.removeEventListener("click", cancelHandler);
+              resolve(val);
+            }
+            function okHandler(e) {
+              e.preventDefault();
+              cleanup(true);
+            }
+            function cancelHandler(e) {
+              e.preventDefault();
+              cleanup(false);
+            }
+
+            confirmOkBtn.addEventListener("click", okHandler);
+            confirmCancelBtn.addEventListener("click", cancelHandler);
+          });
+        }
+
+        // light inline message (kept for compatibility)
+        function showInline(msg, type = "info", timeout = 3000) {
+          messageArea.style.display = "block";
+          messageArea.textContent = msg;
+          messageArea.className = type === "error" ? "notice danger" : "notice";
+          if (timeout > 0)
+            setTimeout(() => {
+              messageArea.style.display = "none";
+            }, timeout);
+        }
+
+        function formatDate(s) {
+          try {
+            return new Date(s).toLocaleString();
+          } catch {
+            return s;
+          }
+        }
+        function setDirty(v = true) {
+          dirty = v;
+          lastSavedEl.textContent = v ? "Unsaved changes" : "Saved";
+        }
+
+        // ---------- Templates ----------
+        async function loadTemplates() {
+          templatesList.innerHTML = `<div style="padding:12px;color:var(--muted)">Loading templates…</div>`;
+          try {
+            const res = await fetch(`${API}/templates`, {
+              headers: authHeaders(),
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            templates = Array.isArray(data) ? data : data.templates || [];
+            renderTemplateList();
+            tplCount.textContent = `${templates.length} total`;
+          } catch (err) {
+            console.error("Failed to load templates", err);
+            templatesList.innerHTML = `<div style="padding:12px;color:#c0392b">Failed to load templates</div>`;
+            tplCount.textContent = "—";
+            showToast("Failed to load templates", "error", 4000);
+          }
+        }
+
+        function renderTemplateList(filterText = "") {
+          const items = templates
+            .filter((t) => {
+              if (!filterText) return true;
+              return (t.name || "")
+                .toLowerCase()
+                .includes(filterText.toLowerCase());
+            })
+            .map((t) => {
+              const el = document.createElement("div");
+              el.className = "tpl-item";
+              el.dataset.id = t.id;
+              el.innerHTML = `
+                <div class="meta">
+                  <div class="name">${escapeHtml(t.name)}</div>
+                  <div class="small">${
+                    t.updated_at
+                      ? formatDate(t.updated_at)
+                      : formatDate(t.created_at)
+                  }</div>
+                </div>
+                <div class="tpl-actions">
+                  <button class="btn-outline btn-small preview-btn" data-id="${
+                    t.id
+                  }" title="Preview">Preview</button>
+                  <button class="btn-outline btn-small edit-btn" data-id="${
+                    t.id
+                  }" title="Edit">Edit</button>
+                </div>
+              `;
+              return el;
+            });
+          templatesList.innerHTML = "";
+          if (!items.length) {
+            templatesList.innerHTML = `<div style="padding:12px;color:var(--muted)">No templates found. Create a new one.</div>`;
+            return;
+          }
+          items.forEach((i) => templatesList.appendChild(i));
+          templatesList.querySelectorAll(".edit-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              const id = btn.dataset.id;
+              openTemplateForEdit(id);
+            });
+          });
+          templatesList.querySelectorAll(".preview-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              const id = btn.dataset.id;
+              previewTemplateById(id);
+            });
+          });
+        }
+
+        async function openTemplateForEdit(id) {
+          if (dirty) {
+            const cont = await modalConfirm(
+              "You have unsaved changes. Proceed and discard changes?"
+            );
+            if (!cont) return;
+          }
+          showToast("Loading template...", "info", 1400);
+          try {
+            const res = await fetch(
+              `${API}/templates/${encodeURIComponent(id)}`,
+              { headers: authHeaders() }
+            );
+            if (!res.ok) throw new Error(await res.text());
+            const body = await res.json();
+            const t = body && body.template ? body.template : null;
+            if (!t) throw new Error("Template not found in response");
+            current = { id: t.id, name: t.name, html_body: t.html_body || "" };
+            nameInput.value = current.name || "";
+            htmlInput.value = current.html_body || "";
+            setDirty(false);
+            tplTitle.textContent = `Edit Template`;
+            renderPreview();
+          } catch (err) {
+            console.error("Open template failed", err);
+            showToast("Failed to load template", "error", 3000);
+          }
+        }
+
+        async function previewTemplateById(id) {
+          try {
+            const res = await fetch(
+              `${API}/templates/${encodeURIComponent(id)}`,
+              { headers: authHeaders() }
+            );
+            if (!res.ok) throw new Error(await res.text());
+            const body = await res.json();
+            const t = body && body.template ? body.template : null;
+            if (!t) throw new Error("Template not found in response");
+            openPreviewWindow(t.html_body || "");
+          } catch (err) {
+            console.error("Preview failed", err);
+            showToast("Failed to preview template", "error");
+          }
+        }
+
+        function openPreviewWindow(html) {
+          const w = window.open("", "_blank");
+          w.document.open();
+          w.document.write(
+            html || "<div style='padding:20px'>Empty template</div>"
+          );
+          w.document.close();
+        }
+
+        async function createNewTemplate() {
+          if (dirty) {
+            const cont = await modalConfirm(
+              "You have unsaved changes. Create new template and discard changes?"
+            );
+            if (!cont) return;
+          }
+          current = null;
+          nameInput.value = "";
+          htmlInput.value =
+            "<!-- Paste template HTML here. Put {{content}} where AI-generated content should be inserted. -->\n\n";
+          tplTitle.textContent = "New Template";
+          setDirty(true);
+          renderPreview();
+        }
+
+        async function saveTemplate(asNew = false) {
+          const name = nameInput.value.trim();
+          const html = htmlInput.value;
+          if (!name) {
+            showToast("Please provide a template name", "error");
+            return;
+          }
+
+          const nameConflict = templates.some(
+            (t) =>
+              (t.name || "").trim().toLowerCase() === name.toLowerCase() &&
+              (!current || t.id !== current.id)
+          );
+          if (nameConflict && asNew) {
+            showToast(
+              "Template name already exists. Please choose a unique name.",
+              "error"
+            );
+            return;
+          }
+          if (
+            nameConflict &&
+            !asNew &&
+            current &&
+            current.name.trim().toLowerCase() !== name.toLowerCase()
+          ) {
+            showToast(
+              "Another template with this name already exists. Choose a unique name.",
+              "error"
+            );
+            return;
+          }
+
+          showToast("Saving template...", "info", 0);
+          try {
+            if (!current || asNew) {
+              const payload = { name, html_body: html };
+              const res = await fetch(`${API}/templates`, {
+                method: "POST",
+                headers: authHeaders({ "Content-Type": "application/json" }),
+                body: JSON.stringify(payload),
+              });
+              if (!res.ok) throw new Error(await res.text());
+              const created = await res.json();
+              showToast("Template created", "success", 2000);
+              await loadTemplates();
+              if (created && created.id) {
+                openTemplateForEdit(created.id);
+              } else {
+                createNewTemplate();
+              }
+            } else {
+              const payload = { name, html_body: html };
+              const res = await fetch(
+                `${API}/templates/${encodeURIComponent(current.id)}`,
+                {
+                  method: "PUT",
+                  headers: authHeaders({ "Content-Type": "application/json" }),
+                  body: JSON.stringify(payload),
+                }
+              );
+              if (!res.ok) throw new Error(await res.text());
+              const updated = await res.json();
+              showToast("Template updated", "success", 1500);
+              setDirty(false);
+              await loadTemplates();
+            }
+          } catch (err) {
+            console.error("Save failed", err);
+            showToast(
+              "Failed to save template: " + (err.message || err),
+              "error",
+              5000
+            );
+          }
+        }
+
+        async function deleteCurrentTemplate() {
+          if (!current || !current.id) {
+            showToast("No template loaded to delete", "error");
+            return;
+          }
+          const ok = await modalConfirm(
+            `Delete template "${current.name}"? This action cannot be undone.`
+          );
+          if (!ok) return;
+          try {
+            const res = await fetch(
+              `${API}/templates/${encodeURIComponent(current.id)}`,
+              {
+                method: "DELETE",
+                headers: authHeaders({ "Content-Type": "application/json" }),
+              }
+            );
+            if (!res.ok) throw new Error(await res.text());
+            showToast("Template deleted", "success", 1500);
+            current = null;
+            nameInput.value = "";
+            htmlInput.value = "";
+            setDirty(false);
+            await loadTemplates();
+            renderPreview();
+          } catch (err) {
+            console.error("Delete failed", err);
+            showToast("Failed to delete template", "error", 3000);
+          }
+        }
+
+        // ---------- Images (load with delete buttons) ----------
+        async function loadImages() {
+          imagesList.innerHTML = `<div class="small-note">Loading…</div>`;
+          imagesSelect.innerHTML = `<option value="">-- pick image URL --</option>`;
+          try {
+            const res = await fetch(`${API}/images`, {
+              headers: authHeaders(),
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            images = Array.isArray(data) ? data : data.images || [];
+            if (!images.length) {
+              imagesList.innerHTML = `<div class="small-note">No images uploaded yet.</div>`;
+              return;
+            }
+
+            imagesList.innerHTML = "";
+            imagesSelect.innerHTML = `<option value="">-- pick image URL --</option>`;
+
+            for (const img of images) {
+              const url = img.public_url;
+              const thumbUrl = `${url}/thumb`;
+
+              const thumb = document.createElement("div");
+              thumb.className = "img-thumb";
+              thumb.title = img.filename || img.name || `image-${img.id}`;
+
+              const imgEl = document.createElement("img");
+              imgEl.src = thumbUrl || url;
+              imgEl.alt = img.filename || "image";
+              thumb.appendChild(imgEl);
+
+              // delete button overlay
+              const delBtn = document.createElement("button");
+              delBtn.className = "img-delete";
+              delBtn.title = "Delete image";
+              delBtn.innerHTML = "✕";
+              delBtn.dataset.id = img.id;
+              delBtn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                const confirmed = await modalConfirm(
+                  "Delete this image? It will be removed permanently."
+                );
+                if (!confirmed) return;
+                await deleteImage(img.id);
+              });
+              thumb.appendChild(delBtn);
+
+              // click to copy URL quickly
+              thumb.addEventListener("click", () => {
+                navigator.clipboard
+                  .writeText(url)
+                  .then(() => showToast("Image URL copied", "success", 1400))
+                  .catch(() => showToast("Failed to copy URL", "error", 1800));
+              });
+
+              imagesList.appendChild(thumb);
+
+              const opt = document.createElement("option");
+              opt.value = url;
+              opt.textContent = img.filename || `image-${img.id}`;
+              imagesSelect.appendChild(opt);
+            }
+          } catch (err) {
+            console.error("Load images failed", err);
+            imagesList.innerHTML = `<div class="small-note" style="color:#c0392b">Failed to load images</div>`;
+            showToast("Failed to load images", "error", 3000);
+          }
+        }
+
+        async function deleteImage(imageId) {
+          try {
+            const res = await fetch(
+              `${API}/images/${encodeURIComponent(imageId)}`,
+              {
+                method: "DELETE",
+                headers: authHeaders({ "Content-Type": "application/json" }),
+              }
+            );
+            if (!res.ok) throw new Error(await res.text());
+            showToast("Image deleted", "success", 1400);
+            await loadImages();
+          } catch (err) {
+            console.error("Delete image failed", err);
+            showToast("Failed to delete image", "error", 3000);
+          }
+        }
+
+        async function uploadImage() {
+          const file = imagesInput.files && imagesInput.files[0];
+          if (!file) {
+            showToast("Select an image file first", "error");
+            return;
+          }
+
+          const confirmed = await modalConfirm(
+            "Upload selected image to server? It will be stored in SQL as BLOB."
+          );
+          if (!confirmed) return;
+
+          uploadImageBtn.disabled = true;
+          uploadImageBtn.textContent = "Uploading...";
+          try {
+            const fd = new FormData();
+            fd.append("file", file);
+            const res = await fetch(`${API}/images/upload`, {
+              method: "POST",
+              headers: authHeaders(),
+              body: fd,
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const saved = await res.json();
+            showToast("Image uploaded", "success", 1500);
+            await loadImages();
+            if (saved && saved.public_url) {
+              const url = saved.public_url;
+              setTimeout(() => {
+                imagesSelect.value = url;
+              }, 300);
+            }
+          } catch (err) {
+            console.error("Image upload failed", err);
+            showToast(
+              "Image upload failed: " + (err.message || err),
+              "error",
+              4000
+            );
+          } finally {
+            uploadImageBtn.disabled = false;
+            uploadImageBtn.textContent = "Upload Image";
+          }
+        }
+
+        // ---------- Preview rendering ----------
+        function renderPreview() {
+          const mode = previewModeSelect.value || "live";
+          previewModeLabel.textContent =
+            mode === "live"
+              ? "Previewing rendered HTML"
+              : "Showing raw HTML source";
+          const html =
+            htmlInput.value ||
+            "<div style='padding:16px;color:var(--muted)'>No HTML provided</div>";
+          if (mode === "raw") {
+            try {
+              const doc = previewIframe.contentWindow.document;
+              doc.open();
+              const escaped = escapeHtml(html).replace(/\n/g, "<br>");
+              doc.write(
+                `<pre style="padding:12px;white-space:pre-wrap">${escaped}</pre>`
+              );
+              doc.close();
+              return;
+            } catch (err) {}
+          }
+          try {
+            const doc = previewIframe.contentWindow.document;
+            doc.open();
+            doc.write(html);
+            doc.close();
+          } catch (err) {
+            console.warn("Preview write failed", err);
+            previewIframe.srcdoc = html;
+          }
+        }
+
+        function openPreviewInNewTab() {
+          const html = htmlInput.value || "";
+          openPreviewWindow(html);
+        }
+
+        function insertAtCursor(textarea, text) {
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          const before = textarea.value.substring(0, start);
+          const after = textarea.value.substring(end);
+          textarea.value = before + text + after;
+          const pos = start + text.length;
+          textarea.focus();
+          textarea.selectionStart = textarea.selectionEnd = pos;
+          setDirty(true);
+          renderPreview();
+        }
+
+        function copyImageUrl() {
+          const url = imagesSelect.value;
+          if (!url) {
+            showToast("Select an image URL first", "error");
+            return;
+          }
+          navigator.clipboard
+            .writeText(url)
+            .then(() =>
+              showToast("Image URL copied to clipboard", "success", 1500)
+            )
+            .catch(() =>
+              showToast("Failed to copy (clipboard permission?)", "error")
+            );
+        }
+
+        function escapeHtml(str) {
+          if (str == null) return "";
+          return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        // ---------- Wiring ----------
+        tplSearchInput.addEventListener("input", (e) =>
+          renderTemplateList(e.target.value)
+        );
+        createNewBtn.addEventListener("click", createNewTemplate);
+        backBtn.addEventListener("click", () => {
+          const originalText = backBtn.innerHTML;
+          backBtn.disabled = true;
+          backBtn.innerHTML = "⏳ Going back...";
+          showToast("Returning to Campaign Builder...", "info", 1200);
+          setTimeout(() => {
+            window.location.href = "greenery_dashboard_new.html#campaign";
+          }, 600);
+          setTimeout(() => {
+            backBtn.innerHTML = originalText;
+            backBtn.disabled = false;
+          }, 2000);
+        });
+
+        htmlInput.addEventListener("input", () => {
+          setDirty(true);
+          renderPreview();
+        });
+        nameInput.addEventListener("input", () => setDirty(true));
+        saveBtn.addEventListener("click", () => saveTemplate(false));
+        saveAsNewBtn.addEventListener("click", () => saveTemplate(true));
+        deleteBtn.addEventListener("click", deleteCurrentTemplate);
+        refreshPreview.addEventListener("click", renderPreview);
+        openPreviewNew.addEventListener("click", openPreviewInNewTab);
+        previewModeSelect.addEventListener("change", renderPreview);
+
+        insertContentBtn.addEventListener("click", () =>
+          insertAtCursor(htmlInput, "{{content}}")
+        );
+        insertSubjectBtn.addEventListener("click", () =>
+          insertAtCursor(htmlInput, "{{subject}}")
+        );
+        insertImageBtn.addEventListener("click", () => {
+          const selected = imagesSelect.value;
+          if (selected)
+            insertAtCursor(htmlInput, `<img src="${selected}" alt="" />`);
+          else {
+            // small non-blocking prompt fallback
+            const url = prompt("Enter image URL (or upload below):");
+            if (url) insertAtCursor(htmlInput, `<img src="${url}" alt="" />`);
+          }
+        });
+
+        uploadImageBtn.addEventListener("click", uploadImage);
+        copyImageUrlBtn.addEventListener("click", copyImageUrl);
+
+        if (openTemplateAiBtn) {
+          openTemplateAiBtn.addEventListener("click", () => {
+            window.location.href = "greenery_dashboard_new.html#doctors";
+          });
+        }
+
+        // --- AI Template Generation wiring ---
+        const aiBtn = document.getElementById("ai-generate-btn");
+        const aiModal = document.getElementById("ai-modal");
+        const aiCancelBtn = document.getElementById("ai-cancel-btn");
+        const aiRunBtn = document.getElementById("ai-generate-run");
+        const aiInstructions = document.getElementById("ai-instructions");
+        const aiImagesSelect = document.getElementById("ai-images-select");
+        const aiImageCustom = document.getElementById("ai-image-custom");
+        const aiModalMsg = document.getElementById("ai-modal-msg");
+
+        function populateAiImagesSelect() {
+          aiImagesSelect.innerHTML = '<option value="">-- choose an uploaded image URL (or paste one below) --</option>';
+          for (const opt of imagesSelect.options) {
+            const newOpt = document.createElement("option");
+            newOpt.value = opt.value;
+            newOpt.textContent = opt.textContent;
+            aiImagesSelect.appendChild(newOpt);
+          }
+        }
+
+        aiBtn && aiBtn.addEventListener("click", () => {
+          if (dirty) {
+            modalConfirm("You have unsaved changes. Open AI generator and discard unsaved changes?").then((ok) => {
+              if (!ok) return;
+              openAiModal();
+            });
+          } else {
+            openAiModal();
+          }
+        });
+
+        function openAiModal() {
+          populateAiImagesSelect();
+          aiInstructions.value = "";
+          aiImageCustom.value = "";
+          aiModal.style.display = "flex";
+          aiModalMsg.style.display = "none";
+        }
+
+        aiCancelBtn && aiCancelBtn.addEventListener("click", () => {
+          aiModal.style.display = "none";
+        });
+
+        aiRunBtn && aiRunBtn.addEventListener("click", async () => {
+          const instr = aiInstructions.value.trim();
+          const sel = aiImagesSelect.value;
+          const custom = aiImageCustom.value.trim();
+          const image_urls = [];
+          if (custom) image_urls.push(custom);
+          else if (sel) image_urls.push(sel);
+
+          if (!instr) {
+            showToast("Please enter instructions for the AI", "error");
+            return;
+          }
+
+          aiRunBtn.disabled = true;
+          aiRunBtn.textContent = "Generating...";
+          aiModalMsg.style.display = "block";
+          aiModalMsg.textContent = "Working... this may take a moment.";
+
+          try {
+            const payload = { instructions: instr, image_urls: image_urls, template_name: nameInput.value || null };
+            const res = await fetch(`${API}/templates/generate-from-image`, {
+              method: "POST",
+              headers: authHeaders({ "Content-Type": "application/json" }),
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) {
+              const txt = await res.text();
+              throw new Error(txt || "AI generation failed");
+            }
+            const data = await res.json();
+            if (!data || !data.html_body) throw new Error("No template returned from AI");
+
+            htmlInput.value = data.html_body;
+            setDirty(true);
+            renderPreview();
+
+            if (data.subject) {
+              showInline(`AI Suggestion — Subject: ${data.subject}`, "info", 8000);
+            } else {
+              showInline("AI generated template (no subject suggested)", "info", 5000);
+            }
+
+            aiModal.style.display = "none";
+          } catch (err) {
+            console.error("AI generate failed", err);
+            aiModalMsg.textContent = "Generation failed: " + (err.message || err);
+            showToast("AI generation failed", "error", 4000);
+          } finally {
+            aiRunBtn.disabled = false;
+            aiRunBtn.textContent = "Generate Template";
+          }
+        });
+
+        window.addEventListener("keydown", (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+            e.preventDefault();
+            saveTemplate(false);
+          }
+        });
+
+        // init
+        (async function init() {
+          htmlInput.value = "\n\n";
+          renderPreview();
+          await Promise.all([loadTemplates(), loadImages()]);
+          setDirty(false);
+        })();
+      })();
+    </script>
+
+    <script>
+      (function () {
+        // Check if the page is loaded inside an iframe
+        if (window.self !== window.top) {
+          // --- We are in an iframe (like the dashboard Step 6) ---
+          // Hide the *entire* top bar and remove the top margin
+          var topbar = document.querySelector(".topbar");
+          if (topbar) topbar.style.display = "none";
+
+          var container = document.querySelector(".container");
+          if (container) container.style.marginTop = "0";
+        } else {
+        }
+      })();
+    </script>
+  </body>
+</html>

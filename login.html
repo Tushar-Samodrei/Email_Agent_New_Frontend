@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login — Email Agent</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --primary:      #6366F1;
+        --primary-dark: #4F46E5;
+        --primary-ring: rgba(99,102,241,0.15);
+        --bg:    #F8FAFC;
+        --surface: #FFFFFF;
+        --border: #E2E8F0;
+        --text:   #0F172A;
+        --text-2: #475569;
+        --text-3: #94A3B8;
+        --danger: #EF4444;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+
+      body {
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Brand bar at top */
+      .login-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+      .login-brand-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--primary);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .login-brand-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .login-brand-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary-dark);
+        line-height: 1;
+      }
+      .login-brand-sub {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-3);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-top: 2px;
+      }
+
+      /* Card */
+      .box {
+        width: 400px;
+        max-width: 100%;
+        background: var(--surface);
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 0 1px rgba(15,23,42,0.04);
+        padding: 36px 32px;
+      }
+
+      h2 {
+        margin: 0 0 24px;
+        color: var(--text);
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .field { margin-bottom: 14px; }
+
+      input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text);
+        background: var(--surface);
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-ring);
+      }
+      input::placeholder { color: var(--text-3); }
+
+      button#actionBtn {
+        width: 100%;
+        padding: 11px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+      }
+      button#actionBtn:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+        transform: translateY(-1px);
+      }
+      button#actionBtn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .muted {
+        color: var(--primary-dark);
+        font-size: 13px;
+        text-align: center;
+        margin-top: 18px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .muted:hover { color: var(--primary); }
+
+      .small {
+        font-size: 12px;
+        color: var(--text-3);
+        margin-top: 12px;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      .error {
+        color: var(--danger);
+        font-size: 13px;
+        margin-top: 10px;
+        text-align: center;
+        background: #FEF2F2;
+        border: 1px solid #FECACA;
+        border-radius: 6px;
+        padding: 8px 12px;
+      }
+
+      /* Divider */
+      .login-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+        color: var(--text-3);
+        font-size: 12px;
+      }
+      .login-divider::before,
+      .login-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+    </style>
+    <script src="env.js"></script>
+  </head>
+  <body>
+    <div class="box">
+      <div class="login-brand">
+        <div class="login-brand-icon">S</div>
+        <div class="login-brand-text">
+          <div class="login-brand-name">Samodrei</div>
+          <div class="login-brand-sub">AI Agents for Pharma</div>
+        </div>
+      </div>
+      <h2 id="title">Login to Email Agent</h2>
+      <div id="signupFull" style="display: none" class="field">
+        <input
+          id="fullName"
+          type="text"
+          placeholder="Full name (optional)"
+          autocomplete="name"
+        />
+      </div>
+      <div class="field">
+        <input
+          id="email"
+          type="email"
+          placeholder="Email"
+          autocomplete="username"
+        />
+      </div>
+      <div class="field">
+        <input
+          id="password"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <div class="field">
+        <button id="actionBtn">Login</button>
+      </div>
+
+      <div id="err" class="error" style="display: none"></div>
+
+      <div class="muted" id="switcher">Don't have an account? Sign up</div>
+
+      <div class="small">
+        You will stay logged in until you click "Logout" in the dashboard.
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const API_BASE =
+          window.env && window.env.API_BASE_URL
+            ? window.env.API_BASE_URL + "/auth"
+            : window.API_BASE_URL
+            ? window.API_BASE_URL + "/auth"
+            : window.API_BASE;
+
+        let isSignup = false;
+
+        const titleEl = document.getElementById("title");
+        const switcher = document.getElementById("switcher");
+        const actionBtn = document.getElementById("actionBtn");
+        const emailEl = document.getElementById("email");
+        const passEl = document.getElementById("password");
+        const errEl = document.getElementById("err");
+
+        function setMode(signup) {
+          isSignup = !!signup;
+          titleEl.textContent = signup
+            ? "Create an account"
+            : "Login to Email Agent";
+          actionBtn.textContent = signup ? "Sign up" : "Login";
+          switcher.textContent = signup
+            ? "Already have an account? Login"
+            : "Don't have an account? Sign up";
+          errEl.style.display = "none";
+          // show/hide full name input for signup only
+          document.getElementById("signupFull").style.display = signup
+            ? "block"
+            : "none";
+        }
+
+        switcher.addEventListener("click", () => setMode(!isSignup));
+        setMode(false);
+
+        // Helper: store minimal user object expected by your other scripts
+        function saveUserToLocalStorage(apiResponse) {
+          const userObj = {
+            id: apiResponse.id,
+            email: apiResponse.email,
+            full_name: apiResponse.full_name || null,
+          };
+          localStorage.setItem("user", JSON.stringify(userObj));
+        }
+
+        actionBtn.addEventListener("click", async () => {
+          errEl.style.display = "none";
+          const email = emailEl.value.trim();
+          const password = passEl.value;
+          const full_name = document.getElementById("fullName")
+            ? document.getElementById("fullName").value.trim()
+            : "";
+
+          if (!email || !password) {
+            errEl.textContent = "Please enter email and password.";
+            errEl.style.display = "block";
+            return;
+          }
+
+          const url = isSignup ? API_BASE + "/signup" : API_BASE + "/login";
+          const body = isSignup
+            ? { email, password, full_name }
+            : { email, password };
+
+          actionBtn.disabled = true;
+          actionBtn.textContent = isSignup ? "Signing up..." : "Logging in...";
+
+          try {
+            const resp = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+
+            const json = await resp.json().catch(() => ({}));
+
+            if (!resp.ok) {
+              const msg =
+                json.detail ||
+                json.message ||
+                json.error ||
+                "Authentication failed";
+              throw new Error(msg);
+            }
+
+            saveUserToLocalStorage(json);
+            if (isSignup) {
+              localStorage.setItem("isNewUser", "true");
+            }
+            window.location.href = "greenery_dashboard_new.html";
+          } catch (err) {
+            errEl.textContent = err.message || "Auth error";
+            errEl.style.display = "block";
+          } finally {
+            actionBtn.disabled = false;
+            actionBtn.textContent = isSignup ? "Sign up" : "Login";
+          }
+        });
+
+        // Auto redirect if already logged in (we check for user.id not token)
+        (function autoRedirect() {
+          try {
+            const u = JSON.parse(localStorage.getItem("user") || "null");
+            if (u && u.id) {
+              window.location.href = "greenery_dashboard_new.html";
+            }
+          } catch (e) {}
+        })();
+      })();
+    </script>
+  </body>
+</html>
